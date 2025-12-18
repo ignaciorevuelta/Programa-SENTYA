@@ -512,3 +512,35 @@ def upload_avatar():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+
+@user_bp.route('/professionals', methods=['GET'])
+@requires_coordinator_or_admin
+def get_professionals():
+    """
+    Obtener lista de todos los profesionales activos
+    Para: Selects de asignación en talleres y sesiones
+    """
+    try:
+        professionals = SystemUser.query.filter(
+            SystemUser.rol == UserRole.PROFESSIONAL,
+            SystemUser.is_active == True
+        ).order_by(SystemUser.name).all()
+        
+        return jsonify({
+            "professionals": [
+                {
+                    "id": prof.id,
+                    "name": prof.name,
+                    "last_name": prof.last_name,
+                    "email": prof.email,
+                    "css_id": prof.css_id,
+                    "css_name": prof.css.name if prof.css else None
+                }
+                for prof in professionals
+            ],
+            "total": len(professionals)
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
