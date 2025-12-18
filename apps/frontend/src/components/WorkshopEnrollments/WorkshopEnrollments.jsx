@@ -208,7 +208,7 @@ const WorkshopEnrollments = () => {
                   </div>
                   <div className="student-content">
                     <h3 className='students-subtitle'>{enrollment.user_name}</h3>
-                    <p>Inscrito: {new Date(enrollment.assignment_date).toLocaleDateString('es-ES')}</p>
+                    <p className='students-subtitle'>Inscrito: {new Date(enrollment.assignment_date).toLocaleDateString('es-ES')}</p>
                   </div>
                 </div>
                 {canManageEnrollments && (
